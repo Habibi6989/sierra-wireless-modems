@@ -1,4 +1,12 @@
 #!/bin/bash
+# with this script you need to manually install the zip file from sierra wireless and then specifiy the path of the zip file in the following line 365
+# unzip the zip file you download it 
+# in line 365 enter the path of the .CWE file first and then the .NVU. in that example it is home/ubuntu/XXX/....
+
+
+
+
+
 # shellcheck disable=SC2059
 #
 #.USAGE
@@ -342,7 +350,7 @@ function download_modem_firmware() {
 #    rm -f ./*.cwe ./*.nvu 2>/dev/null
 
     # Unzip SWI9X30C, force overwrite
-    unzip -o "/home/ubuntu/SWI9X30C_02.38.00.00_Generic_002.082_000.zip"
+   # unzip -o "/home/ubuntu/SWI9X30C_02.38.00.00_Generic_002.082_000.zip"
 }
 
 function flash_modem_firmware() {

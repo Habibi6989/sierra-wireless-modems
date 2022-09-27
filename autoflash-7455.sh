@@ -304,45 +304,45 @@ sleep 1
 
 function download_modem_firmware() {
     # Find latest 7455 firmware and download it
-    if [[ -z $SWI9X30C_ZIP ]]; then
-        SWI9X30C_URL=$(curl https://source.sierrawireless.com/resources/airprime/minicard/74xx/airprime-em_mc74xx-approved-fw-packages/ 2> /dev/null | grep PTCRB -B1 | sed 's/,-d-,/./g' | grep -iPo 'href="\K.+/swi9x30c[_0-9.]+_generic_[_0-9.]+' | tail -n1)
-        SWI9X30C_ZIP=${SWI9X30C_URL##*/}
-        SWI9X30C_ZIP="${SWI9X30C_ZIP^^}"'zip'
-    fi
-    SWI9X30C_URL="https://source.sierrawireless.com${SWI9X30C_URL}zip"
-    SWI9X30C_LENGTH=$(curl -sI "$SWI9X30C_URL" | grep -iPo '^Content-Length[^0-9]+\K[0-9]+')
+#    if [[ -z $SWI9X30C_ZIP ]]; then
+#        SWI9X30C_URL=$(curl https://source.sierrawireless.com/resources/airprime/minicard/74xx/airprime-em_mc74xx-approved-fw-packages/ 2> /dev/null | grep PTCRB -B1 | sed 's/,-d-,/./g' | grep -iPo 'href="\K.+/swi9x30c[_0-9.]+_generic_[_0-9.]+' | tail -n1)
+#        SWI9X30C_ZIP=${SWI9X30C_URL##*/}
+#        SWI9X30C_ZIP="${SWI9X30C_ZIP^^}"'zip'
+#    fi
+#    SWI9X30C_URL="https://source.sierrawireless.com${SWI9X30C_URL}zip"
+#    SWI9X30C_LENGTH=$(curl -sI "$SWI9X30C_URL" | grep -iPo '^Content-Length[^0-9]+\K[0-9]+')
 
     # If remote file size is less than 40MiB, something went wrong, exit.
-    if [[ $SWI9X30C_LENGTH -lt 40000000 ]]; then
-        printf "${CYAN}---${NC}\n"
-        printf "Download of ${CYAN}$SWI9X30C_ZIP${NC} failed.\nFile size on server is too small, something is wrong, exiting...\n"
-        printf "Attempted download URL was: $SWI9X30C_URL\n"
-        printf "curl info:\n"
-        curl -sI "$SWI9X30C_URL"
-        printf "${CYAN}---${NC}\n"
-        exit
-    fi
+#    if [[ $SWI9X30C_LENGTH -lt 40000000 ]]; then
+#        printf "${CYAN}---${NC}\n"
+#        printf "Download of ${CYAN}$SWI9X30C_ZIP${NC} failed.\nFile size on server is too small, something is wrong, exiting...\n"
+#        printf "Attempted download URL was: $SWI9X30C_URL\n"
+#        printf "curl info:\n"
+#        curl -sI "$SWI9X30C_URL"
+#        printf "${CYAN}---${NC}\n"
+#        exit
+#    fi
 
-    if [[ $SWI9X30C_LENGTH -eq $(stat --printf="%s" "$SWI9X30C_ZIP" 2>/dev/null) ]]; then
-        echo "Already downloaded $SWI9X30C_ZIP..."
-    else
-        echo "Downloading $SWI9X30C_URL"
-        curl -o "$SWI9X30C_ZIP" "$SWI9X30C_URL"
-    fi
+#    if [[ $SWI9X30C_LENGTH -eq $(stat --printf="%s" "$SWI9X30C_ZIP" 2>/dev/null) ]]; then
+#        echo "Already downloaded $SWI9X30C_ZIP..."
+#    else
+#        echo "Downloading $SWI9X30C_URL"
+#        curl -o "$SWI9X30C_ZIP" "$SWI9X30C_URL"
+#    fi
 
     # If download size does not match what server says, exit:
-    if [[ $SWI9X30C_LENGTH -ne $(stat --printf="%s" "$SWI9X30C_ZIP" 2>/dev/null) ]]; then
-        printf "${CYAN}---${NC}\n"
-        printf "Download of ${CYAN}$SWI9X30C_ZIP${NC} failed.\nDownloaded file size is inconsistent with server, exiting...\n"
-        printf "${CYAN}---${NC}\n"
-        exit
-    fi
+#    if [[ $SWI9X30C_LENGTH -ne $(stat --printf="%s" "$SWI9X30C_ZIP" 2>/dev/null) ]]; then
+#        printf "${CYAN}---${NC}\n"
+#        printf "Download of ${CYAN}$SWI9X30C_ZIP${NC} failed.\nDownloaded file size is inconsistent with server, exiting...\n"
+#        printf "${CYAN}---${NC}\n"
+#        exit
+#    fi
 
     # Cleanup old CWE/NVUs
-    rm -f ./*.cwe ./*.nvu 2>/dev/null
+#    rm -f ./*.cwe ./*.nvu 2>/dev/null
 
     # Unzip SWI9X30C, force overwrite
-    unzip -o "$SWI9X30C_ZIP"
+    unzip -o "/home/ubuntu/SWI9X30C_02.38.00.00_Generic_002.082_000.zip"
 }
 
 function flash_modem_firmware() {
@@ -354,7 +354,7 @@ function flash_modem_firmware() {
     sleep 5
     qmi-firmware-update --reset -d "$deviceid"
     get_modem_bootloader_deviceid
-    qmi-firmware-update --update-download -d "$deviceid" "$SWI9X30C_CWE" "$SWI9X30C_NVU"
+    qmi-firmware-update --update-download -d "$deviceid" "/home/ubuntu/SWI9X30C_02.38.00.00_Generic_002.082_000/SWI9X30C_02.38.00.00.cwe" "/home/ubuntu/SWI9X30C_02.38.00.00_Generic_002.082_000/SWI9X30C_02.38.00.00_GENERIC_002.082_000.nvu"
     rc=$?
     if [[ $rc != 0 ]]
     then

@@ -1,7 +1,7 @@
 #!/bin/bash
-# with this script you need to manually install the zip file from sierra wireless and then specifiy the path of the zip file in the following line 365
-# unzip the zip file you download it 
-# in line 365 enter the path of the .CWE file first and then the .NVU. in that example it is home/ubuntu/XXX/....
+# with this script you need to manually install the zip file from sierra wireless and then specifiy the path of the .CWE and .NVU file in the following line 365
+# unzip the zip file you download it, now you should see a new folder with two files inside it 
+# in line 365 of this script enter the path of the .CWE file first and then the .NVU. in the example below it is home/ubuntu/XXX/....
 
 
 
